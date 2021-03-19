@@ -1,13 +1,41 @@
 <template>
-  <h1>this is job detail component {{id}}</h1>
+  <div v-if="job" class="job">
+    <h1>{{job.title}}</h1>
+    <p>{{job.description}}</p>
+    <p>{{job.id}}</p>
+  </div>
+  <div v-else>
+      <p>Loading job details ....</p>
+  </div>
 </template>
 
 <script>
 export default {
-    props:["id"]
+    data(){
+        return{
+            job:null
+        }
+    },
+    props:["id"],
+    mounted(){
+        fetch("http://localhost:3000/jobs/"+this.id)
+        .then((response)=> response.json())
+        .then((data)=>this.job=data)
+        .catch(error=>console.log(error.message));
+    }
 }
 </script>
 
-<style>
-
+<style scoped>
+body{
+    background: #ddd;
+}
+.job{
+    max-width: 400px;
+    background: crimson;
+    color: #fff;
+    margin: 10px auto;
+    border-radius: 4px;
+    padding: 10px;
+}
 </style>
